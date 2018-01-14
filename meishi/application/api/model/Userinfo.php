@@ -13,6 +13,8 @@ use think\Model;
 
 class Userinfo extends Model
 {
+    protected $hidden = ['delete_time', 'update_time','city'];
+
     // 根据uid检查是否有info，没有则新增
     public static function uidCheckInfo($uid, $post)
     {

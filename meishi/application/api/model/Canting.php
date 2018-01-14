@@ -18,15 +18,16 @@ class Canting extends Model
     // 获取餐厅列表(where条件)
     public static function cantingList($post)
     {
+//        $data = self::where($post)->with(['wenzhang'])->select();
         $data = self::where($post)->select();
         return $data;
     }
 
 
-    // 获取餐厅详细信息：关联->菜品，环境，文章
+    // 获取餐厅详细信息：关联->留言，文章
     public static function cantingDetail($id)
     {
-        $data = self::with(['caipin', 'huanjing', 'wenzhang'])->find($id);
+        $data = self::with(['liuyan','wenzhang'])->find($id);
         return $data;
     }
 
@@ -48,21 +49,27 @@ class Canting extends Model
 
 
     // 关联->菜品
-    public function caipin()
-    {
-        return $this->hasMany('caipin', 'canting_id', 'id');
-    }
-
-    // 关联->环境
-    public function huanjing()
-    {
-        return $this->hasMany('huanjing', 'canting_id', 'id');
-    }
+//    public function caipin()
+//    {
+//        return $this->hasMany('caipin', 'canting_id', 'id');
+//    }
+//
+//    // 关联->环境
+//    public function huanjing()
+//    {
+//        return $this->hasMany('huanjing', 'canting_id', 'id');
+//    }
 
     // 关联->文章
     public function wenzhang()
     {
         return $this->hasMany('wenzhang', 'canting_id', 'id');
+    }
+
+    // 关联->留言->关联userinfo
+    public function liuyan()
+    {
+        return $this->hasMany('liuyan', 'canting_id', 'id')->order('create_time desc')->limit(5)->with(['liuyanuserinfo']);
     }
 
 }

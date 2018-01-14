@@ -23,15 +23,21 @@ Route::post('api/canting/updateCanting', 'api/canting/updateCanting');        //
 Route::post('api/canting/deleteCanting', 'api/canting/deleteCanting');        // 删除餐厅
 Route::post('api/canting/zan', 'api/canting/dianzanCanting');                 // 点赞餐厅+1
 
+// 留言
+Route::post('api/liuyan/list', 'api/liuyan/liuyanList');                // 查询留言列表（根据餐厅ID）
+Route::post('api/liuyan/create', 'api/liuyan/createLiuyan');            // 新增留言（接受餐厅id,留言内容,uid内部获取）
+Route::post('api/liuyan/myliuyan', 'api/liuyan/getMyLiuyan');           // 查询我的留言（根据uid-客户端我的页-我的留言）
+
+
 // 菜品
-Route::post('api/caipin/createcaipin', 'api/caipin/createCaipin');    // 新增菜品
-Route::post('api/caipin/updateCaipin', 'api/caipin/updateCaipin');    // 更新菜品
-Route::post('api/caipin/deleteCaipin', 'api/caipin/deleteCaipin');    // 删除菜品
+//Route::post('api/caipin/createcaipin', 'api/caipin/createCaipin');    // 新增菜品
+//Route::post('api/caipin/updateCaipin', 'api/caipin/updateCaipin');    // 更新菜品
+//Route::post('api/caipin/deleteCaipin', 'api/caipin/deleteCaipin');    // 删除菜品
 
 // 环境
-Route::post('api/huanjing/createhuanjing', 'api/huanjing/createHuanjing');    // 新增环境
-Route::post('api/huanjing/updatehuanjing', 'api/huanjing/updateHuanjing');    // 更新环境
-Route::post('api/huanjing/deletehuanjing', 'api/huanjing/deleteHuanjing');    // 删除环境
+//Route::post('api/huanjing/createhuanjing', 'api/huanjing/createHuanjing');    // 新增环境
+//Route::post('api/huanjing/updatehuanjing', 'api/huanjing/updateHuanjing');    // 更新环境
+//Route::post('api/huanjing/deletehuanjing', 'api/huanjing/deleteHuanjing');    // 删除环境
 
 // 文章
 Route::post('api/wenzhang/createwenzhang', 'api/wenzhang/createWenzhang');    // 新增文章
@@ -47,7 +53,7 @@ Route::post('api/cos/delete', 'api/cos/cosdelete');                 // 删除
 
 // Token
 Route::post('api/token/gettoken', 'api/token/getToken');   // 获取Token
-Route::post('api/token/verify','api/token/verifyToken');   // 检查Token是否有效
+Route::post('api/token/verify', 'api/token/verifyToken');   // 检查Token是否有效
 
 
 // User
