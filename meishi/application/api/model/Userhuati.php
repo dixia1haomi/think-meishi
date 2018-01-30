@@ -25,7 +25,7 @@ class Userhuati extends Model
     // 关联->huati表
     public function userhuatiToHuati()
     {
-        return $this->hasOne('huati', 'id', 'huati_id');
+        return $this->hasOne('huati', 'id', 'huati_id')->bind(['title']);
     }
 
 }

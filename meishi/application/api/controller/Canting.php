@@ -13,8 +13,13 @@ use app\api\model\Xingping as xingpingModel;
 use app\api\service\BaseToken;
 use app\exception\QueryDbException;
 
+// ------------
+use think\cache\driver\Redis;
+
 class Canting
 {
+
+
 
     // 获取餐厅列表(where条件)
     public function getList()
