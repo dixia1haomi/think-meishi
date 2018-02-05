@@ -17,5 +17,9 @@ return [
     'token_expire' => 7200,
 
     //token->key的加密 盐
-    'token_salt' => 'dixia2haomi'
+    'token_salt' => 'dixia2haomi',
+
+    // 微信获取access_token的url地址
+    'access_token_url' => "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s",
+
 ];

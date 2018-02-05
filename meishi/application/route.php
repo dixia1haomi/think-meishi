@@ -73,3 +73,5 @@ Route::post('api/huati/deletehuati', 'api/huati/deleteUserHuati');    // 删除�
 Route::post('api/huati/myhuati', 'api/huati/getMyHuati');             // 查询我的话题（根据uid查询）（我的页-我的话题）
 
 
+// 客服
+Route::get('api/kefu/getkefu', 'api/kefu/getKefu');             // 客服接口
