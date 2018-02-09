@@ -22,6 +22,7 @@ Route::post('api/canting/createCanting', 'api/canting/createCanting');        //
 Route::post('api/canting/updateCanting', 'api/canting/updateCanting');        // 更新餐厅
 Route::post('api/canting/deleteCanting', 'api/canting/deleteCanting');        // 删除餐厅
 Route::post('api/canting/zan', 'api/canting/dianzanCanting');                 // 点赞餐厅+1
+Route::get('api/canting/aaa', 'api/canting/aaa');
 
 // 留言
 Route::post('api/liuyan/list', 'api/liuyan/liuyanList');                // 查询留言列表（根据餐厅ID）
@@ -56,6 +57,8 @@ Route::post('api/cos/delete', 'api/cos/cosdelete');                 // 删除
 Route::post('api/token/gettoken', 'api/token/getToken');   // 获取Token
 Route::post('api/token/verify', 'api/token/verifyToken');   // 检查Token是否有效
 
+Route::post('api/token/app', 'api/token/getAppToken');    //第三方登录获取token
+
 
 // User
 Route::post('api/user/login', 'api/user/userLogin');             // 用户登陆（获取userInfo）
@@ -74,4 +77,25 @@ Route::post('api/huati/myhuati', 'api/huati/getMyHuati');             // 查询�
 
 
 // 客服
-Route::get('api/kefu/getkefu', 'api/kefu/getKefu');             // 客服接口
+Route::get('api/kefu/getkefu', 'api/kefu/getKefu');             // *客服接口  gzh_accsee_token
+Route::post('api/kefu/gzhacc', 'api/Kefu/gzh_accsee_token');
+Route::post('api/kefu/code', 'api/Kefu/jiemi_opencard_code');
+
+// 卡劵
+Route::post('api/kajuan/select', 'api/Kajuan/select_Kajuan');                             // 查询优惠商家列表
+Route::post('api/kajuan/shengyushuliang', 'api/Kajuan/update_shengyushuliang');           // 更新卡劵剩余数量
+Route::post('api/kajuan/create_in_user', 'api/Kajuan/create_kajuan_in_user');             // 储存卡劵信息到用户名下,需要uid，卡劵ID，加密code
+Route::post('api/kajuan/get', 'api/Kajuan/get_Kajuan');                                   // 领取卡劵，需要卡劵ID
+Route::post('api/kajuan/mykajuan', 'api/Kajuan/my_kajuan');                               // 我的卡劵（查询用户名下已领取的所有卡劵,用于客户端调用后打开卡包）需要UID
+//cardExt
+//:
+//"{"timestamp": "1517986420", "signature":"6fee520ff3f6df19002ab42a02a502abaca8339d"}"
+//cardId
+//:
+//"pQ7pM1gccLWeQjOBkDN60PxClnFQ"
+//code
+//:
+//"bhCeO1eaJaTF1GgpVPxIn8ckYFjmp9Brs0iQRU07iqc="
+//isSuccess
+//:
+//true

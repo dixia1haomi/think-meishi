@@ -111,4 +111,9 @@ class Canting
     }
 
 
+    //-------------
+    public function aaa(){
+        return 'asd';
+    }
+
 }

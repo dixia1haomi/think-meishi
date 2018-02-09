@@ -11,13 +11,22 @@ namespace app\exception;
 
 class TokenException extends BaseException
 {
-    public $code = 400;
+    public $code = 10004;
 
     public $msg = 'token异常，TokenException';
 
     public $errorCode = 40000;
 }
 
+// 参数错误 $Code = 10001
+
+// 数据库错误 $Code = 10002
+
+// 微信方面错误 $Code = 10003
+
+// Token错误 $Code = 10004
+
+// ------------------------------------
 
 // 参数错误 $errorCode = 10000
 
