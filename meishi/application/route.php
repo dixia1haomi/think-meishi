@@ -17,7 +17,7 @@ use think\Route;
 // 餐厅
 Route::post('api/canting/list', 'api/canting/getList');                       // 获取餐厅列表 shoucangCantingList
 Route::post('api/canting/shoucanglist', 'api/canting/shoucangCantingList');   // 获取收藏的餐厅列表（我的-我的收藏使用）
-Route::post('api/canting/detail', 'api/canting/getDetail');                   // 获取餐厅详细信息
+Route::post('api/canting/detail', 'api/canting/getDetail');                   // 获取餐厅详细信息，接受餐厅表ID
 Route::post('api/canting/createCanting', 'api/canting/createCanting');        // 新增餐厅
 Route::post('api/canting/updateCanting', 'api/canting/updateCanting');        // 更新餐厅
 Route::post('api/canting/deleteCanting', 'api/canting/deleteCanting');        // 删除餐厅
@@ -83,10 +83,12 @@ Route::post('api/kefu/code', 'api/Kefu/jiemi_opencard_code');
 
 // 卡劵
 Route::post('api/kajuan/select', 'api/Kajuan/select_Kajuan');                             // 查询优惠商家列表
+Route::post('api/kajuan/find', 'api/Kajuan/find_Kajuan');                                 // 查询指定卡劵(客户端卡劵页用，接受卡劵ID)
 Route::post('api/kajuan/shengyushuliang', 'api/Kajuan/update_shengyushuliang');           // 更新卡劵剩余数量
-Route::post('api/kajuan/create_in_user', 'api/Kajuan/create_kajuan_in_user');             // 储存卡劵信息到用户名下,需要uid，卡劵ID，加密code
-Route::post('api/kajuan/get', 'api/Kajuan/get_Kajuan');                                   // 领取卡劵，需要卡劵ID
-Route::post('api/kajuan/mykajuan', 'api/Kajuan/my_kajuan');                               // 我的卡劵（查询用户名下已领取的所有卡劵,用于客户端调用后打开卡包）需要UID
+Route::post('api/kajuan/code', 'api/Kajuan/jiemi_code');                                  // 解密wx.addCard成功后返回的code(接受加密code,用于wx.openCard)
+Route::post('api/kajuan/signature', 'api/Kajuan/get_kajuan_signature');                   // 获取卡劵signature（后续用于调用wx.addcard）
+//Route::post('api/kajuan/mykajuan', 'api/Kajuan/my_kajuan');                               // 我的卡劵（查询用户名下已领取的所有卡劵,用于客户端调用后打开卡包）需要UID
+
 //cardExt
 //:
 //"{"timestamp": "1517986420", "signature":"6fee520ff3f6df19002ab42a02a502abaca8339d"}"

@@ -31,9 +31,20 @@ class Kajuan
         return $data;
     }
 
+    // 查询指定卡劵(客户端卡劵页用，接受卡劵ID)
+    public function find_Kajuan(){
+        $card_id = input('post.card_id');
+        $kajuanModel = new KajuanModel();
+        $data = $kajuanModel->where('id',$card_id)->find();
+        if(!$data){
+            throw new QueryDbException(['msg'=>'查询指定卡劵失败，kajuan/find_Kajuan']);
+        }
+        return $data;
+    }
 
-    // 领取卡劵
-    public function get_Kajuan(){
+
+    // 获取卡劵signature（后续用于调用wx.addcard）
+    public function get_kajuan_signature(){
         // 获取card_id
         $card_id = input('post.card_id');
 
@@ -99,45 +110,31 @@ class Kajuan
 
 
     // 用户领取成功后 -> 储存卡劵信息到用户名下,需要uid，卡劵ID，加密code
-    public function create_kajuan_in_user(){
-        // 需要uid，卡劵ID，加密code
-        $uid = BaseToken::get_Token_Uid();
-
-        $card_id = input('post.cardId');
+    public function jiemi_code(){
         $code = input('post.code');
 
-        // 先解密，在储存
+        // new解密类 -> go方法解密
         $jiemicode = new JiemiCode();
         $jiemi_code = $jiemicode->go($code);
 
-        // 储存到数据库
-        $params = ['user_id'=>$uid,'card_id'=>$card_id,'code'=>$jiemi_code];
-
-        $usercard = new Usercard();
-        $data = $usercard->create($params);
-
-        if(!$data){
-            throw new QueryDbException(['msg'=>'储存解密后的卡劵信息到用户名下失败，kajuan/create_kajuan_in_user']);
-        }
-
-        return $data;
+        return $jiemi_code;
     }
 
 
     // 我的卡劵（查询用户名下已领取的所有卡劵,用于客户端调用后打开卡包）需要UID
-    public function my_kajuan(){
-        // 用户ID
-        $uid = BaseToken::get_Token_Uid();
-
-        // 查询数据库
-        $usercard = new Usercard();
-        $data = $usercard->where('user_id',$uid)->select();
-
-        if(!$data){
-            throw new QueryDbException(['msg'=>'查询用户名下已领取的所有卡劵失败，kajuan/my_kajuan']);
-        }
-        return $data;
-    }
+//    public function my_kajuan(){
+//        // 用户ID
+//        $uid = BaseToken::get_Token_Uid();
+//
+//        // 查询数据库
+//        $usercard = new Usercard();
+//        $data = $usercard->where('user_id',$uid)->select();
+//
+//        if(!$data){
+//            throw new QueryDbException(['msg'=>'查询用户名下已领取的所有卡劵失败，kajuan/my_kajuan']);
+//        }
+//        return $data;
+//    }
 
 
 

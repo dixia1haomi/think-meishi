@@ -45,7 +45,7 @@ class Canting
         return $data;
     }
 
-    // 获取餐厅详细信息
+    // 获取餐厅详细信息,接受餐厅表ID
     public function getDetail()
     {
         $id = input('post.id');
