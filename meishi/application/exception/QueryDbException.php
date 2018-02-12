@@ -12,7 +12,7 @@ namespace app\exception;
 class QueryDbException extends BaseException
 {
     // 数据库查询错误
-    public $code = 10002;
+    public $code = 200;
 
     public $msg = 'QueryDbException';
 

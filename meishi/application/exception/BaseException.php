@@ -15,9 +15,10 @@ use think\Exception;
 
 class BaseException extends Exception
 {
-    public $code = 400;
+    public $code = 200;
     public $msg = 'BaseMsg';
     public $errorCode = 10000;
+    public $data = 'no';
 
 
     //构造函数->用于让外面的异常可以接受自定义的参数：如：throw new testException(['msg'=>'查询数据不存在']);
@@ -41,6 +42,11 @@ class BaseException extends Exception
         //如果传进来的数组中有code，就覆盖code
         if(array_key_exists('errorCode',$params)){
             $this->errorCode = $params['errorCode'];
+        }
+
+//        //如果传进来的数组中有code，就覆盖code
+        if(array_key_exists('data',$params)){
+            $this->data = $params['data'];
         }
     }
 

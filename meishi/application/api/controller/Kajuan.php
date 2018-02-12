@@ -10,12 +10,14 @@ namespace app\api\controller;
 
 use app\api\model\Kajuan as KajuanModel;
 use app\api\model\Usercard;
+use app\api\model\Usercardlog;
 use app\api\service\BaseToken;
 use app\api\service\kajuan\CheckCardDetail;
 use app\api\service\kajuan\GzhAccseeToken;
 use app\api\service\kajuan\JiemiCode;
 use app\api\service\kajuan\Ticket;
 use app\exception\QueryDbException;
+use app\exception\Success;
 use think\Exception;
 
 class Kajuan
@@ -118,6 +120,22 @@ class Kajuan
         $jiemi_code = $jiemicode->go($code);
 
         return $jiemi_code;
+    }
+
+
+    // 卡劵领取记录(接受卡劵ID)
+    public function user_card_log(){
+        // uid,card_id
+        $uid = BaseToken::get_Token_Uid();
+        $card_id = input('post.card_id');
+
+        // 写入记录
+        $data = Usercardlog::create(['user_id'=>$uid,'card_id'=>$card_id]);
+        if(!$data){
+            // 写入失败记录日志
+            throw new QueryDbException(['msg'=>'asdasd']);
+        }
+        throw new Success();
     }
 
 

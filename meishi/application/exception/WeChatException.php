@@ -11,7 +11,7 @@ namespace app\exception;
 
 class WeChatException extends BaseException
 {
-    public $code = 10003;
+    public $code = 200;
 
     public $msg = 'WeChatException';
 

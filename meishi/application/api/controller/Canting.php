@@ -25,11 +25,7 @@ class Canting
     public function getList()
     {
         $post = input('post.');
-        $data = cantingModel::cantingList($post);
-        if (!$data) {
-            throw new QueryDbException();
-        }
-        return $data;
+        cantingModel::cantingList($post);
     }
 
     // 获取收藏的餐厅列表(我的页面-我的收藏使用)
@@ -45,7 +41,7 @@ class Canting
         return $data;
     }
 
-    // 获取餐厅详细信息,接受餐厅表ID
+    // 获取餐厅详细信息,接受餐厅表ID (*redis改造)
     public function getDetail()
     {
         $id = input('post.id');

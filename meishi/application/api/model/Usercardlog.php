@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: Administrator
- * Date: 2018/2/9 0009
- * Time: 下午 1:21
+ * Date: 2018/2/12 0012
+ * Time: 下午 6:54
  */
 
 namespace app\api\model;
@@ -11,7 +11,7 @@ namespace app\api\model;
 
 use think\Model;
 
-class Usercard extends Model
+class Usercardlog extends Model
 {
 
 }

@@ -22,7 +22,7 @@ Route::post('api/canting/createCanting', 'api/canting/createCanting');        //
 Route::post('api/canting/updateCanting', 'api/canting/updateCanting');        // 更新餐厅
 Route::post('api/canting/deleteCanting', 'api/canting/deleteCanting');        // 删除餐厅
 Route::post('api/canting/zan', 'api/canting/dianzanCanting');                 // 点赞餐厅+1
-Route::get('api/canting/aaa', 'api/canting/aaa');
+
 
 // 留言
 Route::post('api/liuyan/list', 'api/liuyan/liuyanList');                // 查询留言列表（根据餐厅ID）
@@ -63,7 +63,7 @@ Route::post('api/token/app', 'api/token/getAppToken');    //第三方登录获�
 // User
 Route::post('api/user/login', 'api/user/userLogin');             // 用户登陆（获取userInfo）
 Route::post('api/user/huati', 'api/user/userHuatiList');         // 获取用户参与的话题列表
-
+Route::post('api/user/check', 'api/user/uidCheckInfo');          // 根据uid检查userinfo表中是否有用户信息
 
 // 话题
 Route::post('api/huati/create', 'api/huati/createHuati');             // 新增话题（admin）
@@ -87,8 +87,11 @@ Route::post('api/kajuan/find', 'api/Kajuan/find_Kajuan');                       
 Route::post('api/kajuan/shengyushuliang', 'api/Kajuan/update_shengyushuliang');           // 更新卡劵剩余数量
 Route::post('api/kajuan/code', 'api/Kajuan/jiemi_code');                                  // 解密wx.addCard成功后返回的code(接受加密code,用于wx.openCard)
 Route::post('api/kajuan/signature', 'api/Kajuan/get_kajuan_signature');                   // 获取卡劵signature（后续用于调用wx.addcard）
-//Route::post('api/kajuan/mykajuan', 'api/Kajuan/my_kajuan');                               // 我的卡劵（查询用户名下已领取的所有卡劵,用于客户端调用后打开卡包）需要UID
+Route::post('api/kajuan/log', 'api/Kajuan/user_card_log');                                // 卡劵领取记录(接受卡劵ID)
 
+
+// 测试专用
+Route::post('api/ceshi/index', 'api/ceshi/index');
 //cardExt
 //:
 //"{"timestamp": "1517986420", "signature":"6fee520ff3f6df19002ab42a02a502abaca8339d"}"

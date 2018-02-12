@@ -11,7 +11,7 @@ namespace app\exception;
 
 class TokenException extends BaseException
 {
-    public $code = 10004;
+    public $code = 200;
 
     public $msg = 'token异常，TokenException';
 

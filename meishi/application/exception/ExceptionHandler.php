@@ -18,6 +18,7 @@ class ExceptionHandler extends Handle
     private $code;
     private $msg;
     private $errorCode;
+    private $data;
 
     //自定义异常Handle里的render方法
     public function render(\Exception $e)
@@ -27,13 +28,14 @@ class ExceptionHandler extends Handle
             $this->code = $e->code;
             $this->msg = $e->msg;
             $this->errorCode = $e->errorCode;
+            $this->data = $e->data;
 
         }else{
             // 配置中debug开启时，调用父类render方法返回原始页面异常，生产模式下返回自定义render
             if(config('app_debug')){
                return parent::render($e);
             }else{
-                $this->code = 999;
+                $this->code = 500;
                 $this->msg = '服务器内部错误，来自自定义Exception的render方法内';
                 $this->errorCode = 999;
                 //记录日志
@@ -42,10 +44,10 @@ class ExceptionHandler extends Handle
         }
 
         $result = [
-            'code' => $this->code,
             'msg' => $this->msg,
             'errorCode' => $this->errorCode,
-            'exception_url' => Request::instance()->url()
+//            'exception_url' => Request::instance()->url(),
+            'data'=> $this->data,
         ];
 
         return json($result,$this->code);

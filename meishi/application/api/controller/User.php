@@ -13,26 +13,27 @@ use app\api\service\BaseToken;
 use app\api\model\Userinfo as infoModel;
 use app\exception\QueryDbException;
 
+
+
 class User
 {
-    // 用户登陆
+
+    // 根据uid检查userinfo表中是否有用户信息,有返回errorCode == 0（app.js初始化时调用）
+    public function uidCheckInfo(){
+
+        $uid = BaseToken::get_Token_Uid();
+
+        infoModel::uidCheckInfo($uid);
+    }
+
+
+    // 用户登陆(检查是否有info信息，有再对比，不一样更新，没有新增)（app.js appData.loginState为false时调用）
     public function userLogin()
     {
         $uid = BaseToken::get_Token_Uid();
         $post = input('post.');
-        // 查询info表有没有对应的数据(根据uid查询info表user_id)
-        // 没有，新增
-        $data = infoModel::uidCheckInfo($uid, $post);
-        if (!$data) {
-            throw new QueryDbException(['msg' => '根据uid检查info表时出错，uidCheckInfo']);
-        }
-        // 有，对比nickname,url,一样返回.
-        // 不一样，更新，返回
-        $check = infoModel::checkInfo($data, $post);
-        if (!$check) {
-            throw new QueryDbException(['msg' => '对比info数据时出错，checkInfo']);
-        }
-        return $check;
+
+        infoModel::login($uid,$post);
     }
 
 
@@ -51,5 +52,7 @@ class User
         }
         return $data;
     }
+
+
 
 }

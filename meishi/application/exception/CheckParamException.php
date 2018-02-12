@@ -11,7 +11,7 @@ namespace app\exception;
 
 class CheckParamException extends BaseException
 {
-    public $code = 10001;
+    public $code = 200;
 
     public $msg = '查询数据库传入的参数验证错误，CheckParamException';
 
