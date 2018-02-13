@@ -14,6 +14,7 @@ use app\api\service\BaseToken;
 use app\exception\QueryDbException;
 
 // ------------
+use app\exception\Success;
 use think\cache\driver\Redis;
 
 class Canting
@@ -21,12 +22,13 @@ class Canting
 
 
 
-    // 获取餐厅列表(where条件)
+    // 获取餐厅列表(where条件) || redis
     public function getList()
     {
         $post = input('post.');
         cantingModel::cantingList($post);
     }
+
 
     // 获取收藏的餐厅列表(我的页面-我的收藏使用)
     public function shoucangCantingList()
@@ -36,51 +38,52 @@ class Canting
         $cantingModel = new cantingModel();
         $data = $cantingModel->select($list);
         if (!$data) {
-            throw new QueryDbException();
+            // *查询失败，返回错误码，并记录日志
+//            throw new QueryDbException();
         }
-        return $data;
+        throw new Success(['data'=>$data]);
     }
 
-    // 获取餐厅详细信息,接受餐厅表ID (*redis改造)
+
+    // 获取餐厅详细信息,接受餐厅表ID  || redis
     public function getDetail()
     {
         $id = input('post.id');
-        $data = cantingModel::cantingDetail($id);
-        if (!$data) {
-            throw new QueryDbException();
-        }
-        return $data;
+        cantingModel::cantingDetail($id);
     }
 
-    // 新增餐厅
+
+    // 新增餐厅 || redis
     public function createCanting()
     {
+        // *验证admin权限
+
+
         $param = input('post.');
         // 参数验证（*）
-        $data = cantingModel::createCanting($param);
-        if ($data === false) {
-            throw new QueryDbException();
-        }
-        return $data;
+        cantingModel::createCanting($param);
     }
 
-    // 更新餐厅
+
+    // 更新餐厅 || resdis(更新时删除redis缓存)
     public function updateCanting()
     {
-        $param = input('post.');
-        // 参数验证（*）
+        // *验证admin权限
 
+
+        // 获取参数
+        $param = input('post.');
         // 参数中必须有id
-        $data = cantingModel::updateCanting($param);
-        if ($data === false) {
-            throw new QueryDbException();
-        }
-        return $data;
+        cantingModel::updateCanting($param);
     }
+
 
     // 删除餐厅 -> 先删除餐厅关联的菜品，环境，文章
     public function deleteCanting()
     {
+        // *验证admin权限
+
+
         $id = input('post.id');
         // 参数验证（*）
 
@@ -107,9 +110,6 @@ class Canting
     }
 
 
-    //-------------
-    public function aaa(){
-        return 'asd';
-    }
+
 
 }

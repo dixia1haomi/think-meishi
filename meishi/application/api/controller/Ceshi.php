@@ -9,17 +9,18 @@
 namespace app\api\controller;
 
 
+use think\Cache;
+
 class Ceshi
 {
 
     public function index(){
-//        $a = ['id'=>1,'name'=>2];
-////        return $a;
-//        $b = json_encode($a);
-////        return cache('3',$b);
-//         $c = cache('4');
-////        return json_decode($c,true);
-//        return $c;
-        return microtime(true);
+        $a = ['id'=>1,'name'=>2];
+
+//        return Cache::rm('a');
+//    return Cache::set('b',$a);
+        $cache = new Cache();
+return $cache->set('b',$a);
+
     }
 }

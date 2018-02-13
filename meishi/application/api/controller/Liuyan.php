@@ -32,18 +32,13 @@ class Liuyan
     }
 
 
-    // 新增留言（客户端餐厅详情页-写留言）
+    // 新增留言（客户端餐厅详情页-写留言） || redis
     public function createLiuyan(){
         $uid = BaseToken::get_Token_Uid();
         $params = input('post.');               // 接受餐厅ID，Uid，内容.
         $params['user_id'] = $uid;
 
-        $liuyanModel = new liuyanModel();
-        $data = $liuyanModel->create($params);
-        if(!$data){
-            throw new QueryDbException(['msg'=>'新增留言失败，Liuyan/createLiuyan()']);
-        }
-        return $data;
+        liuyanModel::createLiuyan_Model($params);
     }
 
     // 查询我的留言（根据uid-客户端我的页-我的留言）(关联餐厅,取餐厅名)（排序-根据创建时间，分页-20条）

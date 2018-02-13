@@ -9,7 +9,6 @@
 namespace app\api\controller;
 
 use app\api\model\Kajuan as KajuanModel;
-use app\api\model\Usercard;
 use app\api\model\Usercardlog;
 use app\api\service\BaseToken;
 use app\api\service\kajuan\CheckCardDetail;
@@ -20,28 +19,21 @@ use app\exception\QueryDbException;
 use app\exception\Success;
 use think\Exception;
 
+
 class Kajuan
 {
 
     // 查询卡劵列表(客户端index页用)
     public function select_Kajuan(){
-        $kajuanModel = new KajuanModel();
-        $data = $kajuanModel->where('state',1)->select();
-        if(!$data){
-            throw new QueryDbException(['msg'=>'查询卡劵列表失败，kajuan/select_kajuan']);
-        }
-        return $data;
+        KajuanModel::select_Kajuan_Model();
     }
 
-    // 查询指定卡劵(客户端卡劵页用，接受卡劵ID)
+
+    // 查询指定卡劵(客户端卡劵页用，接受卡劵ID(表id))
     public function find_Kajuan(){
-        $card_id = input('post.card_id');
-        $kajuanModel = new KajuanModel();
-        $data = $kajuanModel->where('id',$card_id)->find();
-        if(!$data){
-            throw new QueryDbException(['msg'=>'查询指定卡劵失败，kajuan/find_Kajuan']);
-        }
-        return $data;
+        // 卡劵ID
+        $id = input('post.card_id');
+        KajuanModel::find_Kajuan_Model($id);
     }
 
 
@@ -102,23 +94,18 @@ class Kajuan
         $shengyushuliang = $card_detail['card'][strtolower($card_type)]['base_info']['sku']['quantity'];    // strtolower该函数将传入的字符串参数所有的字符都转换成小写,并以小定形式放回这个字
 
         // 更新剩余数量
-        $kajuanModel = new KajuanModel();
-        $data = $kajuanModel->update(['shengyushuliang'=>$shengyushuliang,'id'=>$id]);
-        if(!$data){
-            throw new QueryDbException(['msg'=>'更新卡劵数量失败，kajuan/update_shengyushuliang']);
-        }
-        return $data;
+        KajuanModel::update_Kajuan_Shengyushuliang_Model($id,$shengyushuliang);
     }
 
 
-    // 用户领取成功后 -> 储存卡劵信息到用户名下,需要uid，卡劵ID，加密code
+    // 用户领取成功后 -> 接受加密code
     public function jiemi_code(){
+
         $code = input('post.code');
 
         // new解密类 -> go方法解密
         $jiemicode = new JiemiCode();
         $jiemi_code = $jiemicode->go($code);
-
         return $jiemi_code;
     }
 
@@ -132,7 +119,7 @@ class Kajuan
         // 写入记录
         $data = Usercardlog::create(['user_id'=>$uid,'card_id'=>$card_id]);
         if(!$data){
-            // 写入失败记录日志
+            // ******写入失败记录日志
             throw new QueryDbException(['msg'=>'asdasd']);
         }
         throw new Success();

@@ -10,13 +10,14 @@ namespace app\api\model;
 
 
 use app\exception\Success;
+use think\Cache;
 use think\Model;
 
 class Canting extends Model
 {
 //    protected $hidden = ['delete_time', 'update_time', 'create_time'];
 
-    // 获取餐厅列表(where条件)
+    // 获取餐厅列表(where条件) || redis
     public static function cantingList($post)
     {
 
@@ -75,19 +76,50 @@ class Canting extends Model
 
     }
 
-    // 新增餐厅
+    // 新增餐厅 || redis
     public static function createCanting($param)
     {
+        // 新增餐厅也要删除redis餐厅列表缓存
         $data = self::create($param);
-        return $data;
+        if(!$data){
+            // *新增餐厅到数据库失败，记录日志
+        }
+        // 新增成功后删除缓存
+        $cantingList = Cache::rm('cantingList');
+        if(!$cantingList){
+            // *删除餐厅列表缓存失败，记录日志
+        }
+        throw new Success(['data'=>$data]);
     }
 
-    // 更新餐厅
+
+    // 更新餐厅 || redis
     public static function updateCanting($param)
     {
+        // 更新数据库
         $data = self::update($param);
-        return $data;
+        // *是不是这样判断更新成功还是失败
+        if(!$data){
+            // *数据库更新失败，记录日志
+        }
+        // 更新成功后删除redis相应的数据，cantingDetail，cantingList
+        $id = $param['id'];
+
+        // 删除对应的餐厅详情
+        $cantingDetail = Cache::rm('cantingDetail-'.$id);
+        if(!$cantingDetail){
+            // *删除餐厅详情缓存失败，记录日志
+        }
+
+        // 删除餐厅列表
+        $cantingList = Cache::rm('cantingList');
+        if(!$cantingList){
+            // *删除餐厅列表缓存失败，记录日志
+        }
+
+        throw new Success(['data'=>$data]);
     }
+
 
     // 删除餐厅
 

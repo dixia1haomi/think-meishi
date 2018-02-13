@@ -12,35 +12,32 @@ use app\api\model\Huati as huatiModel;
 use app\api\model\Userhuati as userhuatiModel;
 use app\api\service\BaseToken;
 use app\exception\QueryDbException;
+use app\exception\Success;
 
 class Huati
 {
     // -------------------------------------------话题------------------------------------------------------
-    // 新增话题，Huati表（admin）
+    // 新增话题，Huati表（admin）|| redis
     public function createHuati()
     {
+        // 新增话题删除redis话题列表数据
+
         // 接受title,miaoshu
         $post = input('post.');
-        $data = huatiModel::create($post);
-        if (!$data) {
-            throw new QueryDbException(['msg' => '新增话题失败，Huati/createHuati']);
-        }
-        return $data;
+        huatiModel::createHuati_Model($post);
     }
 
-    // 更新话题，Huati表（admin）
+
+    // 更新话题，Huati表（admin）|| redis
     public function updateHuati()
     {
         // 接受话题ID，更新的内容
         $post = input('post.');
-        $data = huatiModel::update($post);
-        if (!$data) {
-            throw new QueryDbException(['msg' => '更新话题失败，Huati/updateHuati']);
-        }
-        return $data;
+        huatiModel::updateHuati_Model($post);
     }
 
-    // 删除话题，Huati表（admin）## 删除前应先删除话题下的用户记录
+
+    // 删除话题，Huati表（admin）## 删除前应先删除话题下的用户记录 || ****redis
     public function deleteHuati()
     {
         // *权限 为管理员才能删除
@@ -54,17 +51,38 @@ class Huati
         return $data;
     }
 
-    // 查询话题列表,Huati表（话题页）
+
+    // 查询话题列表,Huati表（话题页） || redis
     public function getHuatiList()
     {
         // 关联查询话题的参与条数
-        $huatiModel = new huatiModel();
-        $data = $huatiModel->with(['userhuati'])->select();
-        if (!$data) {
-            throw new QueryDbException(['msg' => '查询话题列表失败，Huati/getHuatiList']);
-        }
-        return $data;
+        huatiModel::getHuatiList_Model();
     }
+
+
+    // 查询话题详情,Huati表->关联userHuati表（话题页-点击一个话题进入话题详情页）|| 分页太复杂放弃redis
+    public function getHuatiDetail()
+    {
+        // 接受话题ID，关联userhuati表
+        $post_id = input('post.id');
+
+        $huatiModel = new huatiModel();
+
+        $data = $huatiModel->with(['userhuati' => function ($query) {
+            $post_page = input('post.page');
+            $query->with('userinfo')->order('create_time desc')->page($post_page, 20);
+        }])->find($post_id);
+
+
+        if (!$data) {
+            // ****** 日志
+            throw new QueryDbException(['msg' => '查询话题下的所有留言，Huati/getHuatiDetail']);
+        }
+
+        throw new Success(['data'=>$data]);
+    }
+
+
 
 
     // userHuati表，新增，用户参与话题（话题详情页）
@@ -82,25 +100,7 @@ class Huati
     }
 
 
-    // 查询话题下的所有留言,Huati表->关联userHuati表（话题页-点击一个话题进入话题详情页）
-    public function getHuatiDetail()
-    {
-        // 接受话题ID，关联userhuati表
-        $post_id = input('post.id');
-//        $post_page = input('post.page');  放在闭包里面了
-        $huatiModel = new huatiModel();
 
-        $data = $huatiModel->with(['userhuati' => function ($query) {
-            $post_page = input('post.page');
-            $query->with('userinfo')->order('create_time desc')->page($post_page, 20);
-        }])->find($post_id);
-
-
-        if (!$data) {
-            throw new QueryDbException(['msg' => '查询话题下的所有留言，Huati/getHuatiDetail']);
-        }
-        return $data;
-    }
 
 
     // 查询我的话题（根据uid查询->关联话题表，要话题名）（排序-根据创建时间，分页-20条）（我的页-我的话题）
