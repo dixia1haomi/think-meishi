@@ -16,7 +16,10 @@ use think\Model;
 
 class Userinfo extends Model
 {
-    protected $hidden = ['delete_time', 'update_time'];
+//    protected $hidden = ['delete_time', 'update_time'];
+
+
+
 
     // 根据uid检查是否有info，没有则新增
 //    public static function uidCheckInfo($uid, $post)
@@ -52,16 +55,16 @@ class Userinfo extends Model
 //    }
 
 
-        // 根据uid检查userinfo表中是否有用户信息
+    // 根据uid检查userinfo表中是否有用户信息(有：返回errorCode = 0和查到的用户信息,没有：返回errorCode=1)
     public static function uidCheckInfo($uid){
         // 查询数据库
         $data = self::where('user_id',$uid)->find();
 
         if(!$data){
-            throw new QueryDbException(['msg' => '根据uid检查userinfo表中是否有用户信息失败，User/uidCheckInfo']);
+            throw new QueryDbException(['msg' => '根据uid检查userinfo表中是否有用户信息失败，User/uidCheckInfo','errorCode'=>1]);
         }
 
-        throw new Success();
+        throw new Success(['data'=>$data]);
     }
 
 
@@ -123,6 +126,29 @@ class Userinfo extends Model
             throw new QueryDbException(['msg'=>'更新用户信息失败，User/updateUserInfo']);
         }
         throw new Success();
+    }
+
+
+    // 查询用户信息（接受uid）
+//    public static function userWithAll_Model($uid){
+////        $data = self::where('user_id',$uid)->withCount(['userhuati','userliuyan'])->find();
+//        $data = self::where('user_id',$uid)->find();
+//        if(!$data){
+//            // ****** 查询失败，日志，返回错误码
+//        }
+//        throw new Success(['data'=>$data]);
+//    }
+
+    // userinfo关联->userhuati
+    public function userhuati()
+    {
+        return $this->hasMany('userhuati', 'user_id', 'user_id');
+    }
+
+    // userinfo关联->liuyan
+    public function userliuyan()
+    {
+        return $this->hasMany('liuyan', 'user_id', 'user_id');
     }
 
 }

@@ -9,6 +9,7 @@
 namespace app\api\model;
 
 
+use app\exception\QueryDbException;
 use app\exception\Success;
 use think\Cache;
 use think\Model;
@@ -25,10 +26,18 @@ class Liuyan extends Model
 
 
     // 关联->canting(只要餐厅名)
-    public function canting()
+    public function cantingname()
     {
         return $this->hasOne('canting', 'id', 'canting_id')->bind(['name']);
     }
+
+    // 关联->userinfo
+//    public function userinfo()
+//    {
+//        return $this->hasOne('userinfo', 'user_id', 'user_id');
+//    }
+
+
 
 
     // 新增留言 || redis
@@ -53,5 +62,43 @@ class Liuyan extends Model
 //        }
 
         throw new Success(['data'=>$data]);
+    }
+
+
+    // 查询留言分页列表（根据餐厅ID,客户端餐厅详情页-查看全部留言）
+    public static function liuyanList_Model($post_id,$post_page){
+
+
+        $data = self::where('canting_id',$post_id)->with(['liuyanuserinfo'])->order('create_time desc')->page($post_page,20)->select();
+        if(!$data){
+            // ****** 查询留言分页列表失败，日志，返回
+        }
+        throw new Success(['data'=>$data]);
+//        $count = $liuyanModel->where('canting_id',$post_id)->count();
+//        if(!$data || !$count){
+//            throw new QueryDbException(['msg'=>' 根据餐厅ID查询留言列表失败，Liuyan/liuyanList()']);
+//        }
+//        $res['data'] = $data;
+//        $res['count'] = $count;
+//        return $res;
+    }
+
+
+    // 查询我的留言（接受uid,分页20条）
+    public static function getMyLiuyan_Model($uid,$post_page){
+
+        // 根据uid查留言分页20条关联餐厅名
+        $data = self::where('user_id',$uid)->with(['cantingname'])->order('create_time desc')->page($post_page,20)->select();
+        // 根据uid统计有多少条留言
+        $count = self::where('user_id',$uid)->count();
+        // 查询失败
+        if($data === false && $count === false){
+            throw new QueryDbException(['errorCode'=>1,'msg'=>'查询我的留言失败，Liuyan/getMyLiuyan()']);
+        }
+        // 拼接数据
+        $res['data'] = $data;
+        $res['count'] = $count;
+        // 成功返回
+        throw new Success(['data' => $res]);
     }
 }

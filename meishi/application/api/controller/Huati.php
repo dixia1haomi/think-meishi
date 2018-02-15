@@ -71,7 +71,7 @@ class Huati
         $data = $huatiModel->with(['userhuati' => function ($query) {
             $post_page = input('post.page');
             $query->with('userinfo')->order('create_time desc')->page($post_page, 20);
-        }])->find($post_id);
+        }])->withCount(['userhuati'])->find($post_id);
 
 
         if (!$data) {
@@ -104,23 +104,23 @@ class Huati
 
 
     // 查询我的话题（根据uid查询->关联话题表，要话题名）（排序-根据创建时间，分页-20条）（我的页-我的话题）
-    public function getMyHuati()
-    {
-        $uid = BaseToken::get_Token_Uid();
-        $post_page = input('post.page');
-
-        $userModel = new userhuatiModel();
-
-        $data = $userModel->where('user_id', $uid)->with(['userhuatiToHuati'])->order('create_time desc')->page($post_page, 20)->select();
-        $count = $userModel->where('user_id', $uid)->count();
-        if (!$data || !$count) {
-            throw new QueryDbException(['msg' => '查询我的话题失败，Huati/getMyHuati()']);
-        }
-        $res['data'] = $data;
-        $res['count'] = $count;
-        return $res;
-
-    }
+//    public function getMyHuati()
+//    {
+//        $uid = BaseToken::get_Token_Uid();
+//        $post_page = input('post.page');
+//
+//        $userModel = new userhuatiModel();
+//
+//        $data = $userModel->where('user_id', $uid)->with(['userhuatiToHuati'])->order('create_time desc')->page($post_page, 20)->select();
+//        $count = $userModel->where('user_id', $uid)->count();
+//        if (!$data || !$count) {
+//            throw new QueryDbException(['msg' => '查询我的话题失败，Huati/getMyHuati()']);
+//        }
+//        $res['data'] = $data;
+//        $res['count'] = $count;
+//        return $res;
+//
+//    }
 
 
     // userHuati表，删除用户参与的(我的话题)（客户端暂时不开放，验证数据是不是自己的，admin）

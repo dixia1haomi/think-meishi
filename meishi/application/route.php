@@ -27,7 +27,7 @@ Route::post('api/canting/zan', 'api/canting/dianzanCanting');                 //
 // 留言
 Route::post('api/liuyan/list', 'api/liuyan/liuyanList');                // 查询留言列表（根据餐厅ID）
 Route::post('api/liuyan/create', 'api/liuyan/createLiuyan');            // 新增留言（接受餐厅id,留言内容,uid内部获取）
-Route::post('api/liuyan/myliuyan', 'api/liuyan/getMyLiuyan');           // 查询我的留言（根据uid-客户端我的页-我的留言）
+//Route::post('api/liuyan/myliuyan', 'api/liuyan/getMyLiuyan');           // 查询我的留言（根据uid-客户端我的页-我的留言）
 Route::post('api/liuyan/delete', 'api/liuyan/deleteLiuyan');            // 删除留言（内部获取uid，接受id-客户端我的页-我的留言）
 
 
@@ -64,6 +64,10 @@ Route::post('api/token/app', 'api/token/getAppToken');    //第三方登录获�
 Route::post('api/user/login', 'api/user/userLogin');             // 用户登陆（获取userInfo）
 Route::post('api/user/huati', 'api/user/userHuatiList');         // 获取用户参与的话题列表
 Route::post('api/user/check', 'api/user/uidCheckInfo');          // 根据uid检查userinfo表中是否有用户信息
+//Route::post('api/user/all', 'api/user/userWithAll');             // userWithAll
+Route::post('api/user/myliuyan', 'api/user/getMyLiuyan');        // 查询我的留言（根据uid-客户端我的页-我的留言）
+Route::post('api/user/myhuati', 'api/user/getMyHuati');          // 查询我的话题（根据uid查询）（我的页-我的话题）
+
 
 // 话题
 Route::post('api/huati/create', 'api/huati/createHuati');             // 新增话题（admin）
@@ -73,7 +77,7 @@ Route::post('api/huati/list', 'api/huati/getHuatiList');              // 查询�
 Route::post('api/huati/createhuati', 'api/huati/createUserHuati');    // 用户参与话题,新增user话题（话题页-点击话题进入话题详情页）
 Route::post('api/huati/detail', 'api/huati/getHuatiDetail');          // 查询话题内容（根据话题ID）（话题页-点击话题进入话题详情页）查询关联的所有数据
 Route::post('api/huati/deletehuati', 'api/huati/deleteUserHuati');    // 删除用户参与的话题（admin，客户端暂不开放）
-Route::post('api/huati/myhuati', 'api/huati/getMyHuati');             // 查询我的话题（根据uid查询）（我的页-我的话题）
+
 
 
 // 客服

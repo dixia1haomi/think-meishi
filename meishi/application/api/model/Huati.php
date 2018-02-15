@@ -51,7 +51,7 @@ class Huati extends Model
         $huatiList = cache('huatiList');
         if(!$huatiList){
             // 如果redis里没有数据，查mysql
-            $data = self::with(['userhuati'])->select();
+            $data = self::withCount(['userhuati'])->select();   // withCount:关联统计，不需要数据只需要统计数量的时候使用
             if(!$data){
                 // ****** 从mysql里查询话题列表失败，记录日志，返回错误码
             }

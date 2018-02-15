@@ -31,4 +31,6 @@ class User extends Model
     {
         return $this->hasMany('userhuati', 'user_id', 'id');
     }
+
+
 }

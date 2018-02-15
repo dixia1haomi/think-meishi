@@ -17,6 +17,25 @@ class Canting extends Model
 {
 //    protected $hidden = ['delete_time', 'update_time', 'create_time'];
 
+    // 关联->文章
+    public function wenzhang()
+    {
+        return $this->hasOne('wenzhang', 'canting_id', 'id');
+    }
+
+    // 关联:查询餐厅详情使用->取留言limit5条，再关联userinfo取头像和昵称
+    public function liuyan()
+    {
+        return $this->hasMany('liuyan', 'canting_id', 'id')->order('create_time desc')->limit(5)->with(['liuyanuserinfo']);
+    }
+
+    // 关联->餐厅下所有留言的数量
+    public function liuyanCount()
+    {
+        return $this->hasMany('liuyan', 'canting_id', 'id');
+    }
+
+
     // 获取餐厅列表(where条件) || redis
     public static function cantingList($post)
     {
@@ -60,7 +79,7 @@ class Canting extends Model
         // 缓存中没有,去数据库获取后再缓存
         if(!$cantingDetail){
             // 从数据库获取
-            $data = self::with(['liuyan','wenzhang'])->find($id);
+            $data = self::with(['liuyan','wenzhang'])->withCount(['liuyanCount'])->find($id);   //withCount(['liuyan_count'])->
             if(!$data){
                 // *如果从数据库获取失败，记录日志
             }
@@ -137,16 +156,16 @@ class Canting extends Model
 //    }
 
     // 关联->文章
-    public function wenzhang()
-    {
-        return $this->hasOne('wenzhang', 'canting_id', 'id');
-    }
-
-    // 关联->留言->关联userinfo
-    public function liuyan()
-    {
-        return $this->hasMany('liuyan', 'canting_id', 'id')->order('create_time desc')->limit(5)->with(['liuyanuserinfo']);
-    }
+//    public function wenzhang()
+//    {
+//        return $this->hasOne('wenzhang', 'canting_id', 'id');
+//    }
+//
+//    // 关联->留言->关联userinfo
+//    public function liuyan()
+//    {
+//        return $this->hasMany('liuyan', 'canting_id', 'id')->order('create_time desc')->limit(5)->with(['liuyanuserinfo']);
+//    }
 
 }
 
