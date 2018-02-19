@@ -8,8 +8,10 @@
 
 namespace app\api\controller;
 
+use app\api\model\Log;
 use app\api\model\Wenzhang as wenzhangModel;
 use app\exception\QueryDbException;
+use app\exception\Success;
 
 class Wenzhang
 {
@@ -21,9 +23,9 @@ class Wenzhang
         // 参数验证（*）
         $data = wenzhangModel::createWenzhang($param);
         if($data === false){
-            throw new QueryDbException();
+            Log::mysql_log('mysql/Wenzhang/createWenzhang','新增文章失败');
         }
-        return $data;
+        throw new Success(['data'=>$data]);
     }
 
     // 更新文章
@@ -34,9 +36,9 @@ class Wenzhang
         // 参数中必须有id
         $data = wenzhangModel::updateWenzhang($param);
         if ($data === false) {
-            throw new QueryDbException();
+            Log::mysql_log('mysql/Wenzhang/updateWenzhang','更新文章失败');
         }
-        return $data;
+        throw new Success(['data'=>$data]);
     }
 
 
@@ -46,9 +48,9 @@ class Wenzhang
         // 参数验证（*）
 
         $data = wenzhangModel::destroy($id);
-        if ($data === 0) {
-            throw new QueryDbException();
+        if ($data === false) {
+            Log::mysql_log('mysql/Wenzhang/deleteWenzhang','删除文章失败');
         }
-        return $data;
+        throw new Success(['data'=>$data]);
     }
 }

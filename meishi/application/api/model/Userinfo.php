@@ -54,6 +54,11 @@ class Userinfo extends Model
 //        return $update;
 //    }
 
+    /**
+     *  未记录日志
+     *  未理过逻辑
+     */
+
 
     // 根据uid检查userinfo表中是否有用户信息(有：返回errorCode = 0和查到的用户信息,没有：返回errorCode=1)
     public static function uidCheckInfo($uid){
@@ -102,8 +107,8 @@ class Userinfo extends Model
         $data = self::create($res);
 
         // 这里应该抛出写入错误日志的错误
-        if(!$data){
-            throw new QueryDbException(['msg'=>'新增用户信息失败，User/createUserInfo']);
+        if($data === false){
+            Log::mysql_log('mysql/User/createUserInfo','新增用户信息失败');
         }
         throw new Success();
     }
@@ -122,8 +127,8 @@ class Userinfo extends Model
         $data = self::update($res);
 
         // 这里应该抛出写入错误日志的错误
-        if(!$data){
-            throw new QueryDbException(['msg'=>'更新用户信息失败，User/updateUserInfo']);
+        if($data === false){
+            Log::mysql_log('mysql/User/updateUserInfo','更新用户信息失败');
         }
         throw new Success();
     }

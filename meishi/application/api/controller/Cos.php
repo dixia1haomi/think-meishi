@@ -13,7 +13,6 @@ namespace app\api\controller;
 
 require('../cossdk/include.php');
 
-//use app\api\model\Image as imageModel;
 use QCloud\Cos\Auth;
 use QCloud\Cos\Api;
 

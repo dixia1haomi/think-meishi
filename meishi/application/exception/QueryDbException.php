@@ -16,7 +16,7 @@ class QueryDbException extends BaseException
 
     public $msg = 'QueryDbException';
 
-    public $errorCode = 20000;
+    public $errorCode = 1;
 }
 
 

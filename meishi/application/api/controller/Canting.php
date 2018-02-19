@@ -9,6 +9,7 @@
 namespace app\api\controller;
 
 use app\api\model\Canting as cantingModel;
+use app\api\model\Log;
 use app\api\model\Xingping as xingpingModel;
 use app\api\service\BaseToken;
 use app\exception\QueryDbException;
@@ -19,6 +20,11 @@ use think\cache\driver\Redis;
 
 class Canting
 {
+
+    /**
+     *  删除餐厅未完成
+     *  验证admin权限未完成
+     */
 
 
 
@@ -37,9 +43,9 @@ class Canting
         $list = input('post.list');
         $cantingModel = new cantingModel();
         $data = $cantingModel->select($list);
-        if (!$data) {
+        if ($data === false) {
             // *查询失败，返回错误码，并记录日志
-//            throw new QueryDbException();
+            Log::mysql_log('mysql/Canting/shoucangCantingList','获取收藏的餐厅列表失败');
         }
         throw new Success(['data'=>$data]);
     }
@@ -51,6 +57,29 @@ class Canting
         $id = input('post.id');
         cantingModel::cantingDetail($id);
     }
+
+
+    // 餐厅点赞（由于不对用户做要求，所以没有放到user控制器中，仅餐厅表点赞 +1 ）
+    public function dianzanCanting()
+    {
+        // 接受餐厅ID
+        $post_id = input('post.id');
+        $cantingModel = new cantingModel();
+
+        $data = $cantingModel->where(['id'=>$post_id])->setInc('zan');
+        if($data === false){
+            Log::mysql_log('mysql/Canting/dianzanCanting','餐厅点赞失败');
+        }
+        throw new Success(['data'=>$data]);
+    }
+
+
+
+    // -------------------------------------------------------- Admin ----------------------------------------------------------------
+    // -------------------------------------------------------- Admin ----------------------------------------------------------------
+    // -------------------------------------------------------- Admin ----------------------------------------------------------------
+
+
 
 
     // 新增餐厅 || redis
@@ -87,28 +116,12 @@ class Canting
         $id = input('post.id');
         // 参数验证（*）
 
-        $data = cantingModel::destroy($id);
-        if ($data === 0) {
-            throw new QueryDbException();
-        }
-        return $data;
+//        $data = cantingModel::destroy($id);
+//        if ($data === 0) {
+//            throw new QueryDbException();
+//        }
+//        return $data;
     }
-
-
-    // 餐厅点赞（由于不对用户做要求，所以没有放到user控制器中，仅餐厅表点赞 +1 ）
-    public function dianzanCanting()
-    {
-        // 接受餐厅ID
-        $post_id = input('post.id');
-        $cantingModel = new cantingModel();
-
-        $data = $cantingModel->where(['id'=>$post_id])->setInc('zan');
-        if(!$data){
-            throw new QueryDbException(['msg'=>'餐厅点赞接口写入失败，Canting/dianzanCanting']);
-        }
-        return $data;
-    }
-
 
 
 

@@ -9,6 +9,7 @@
 namespace app\api\controller;
 
 use app\api\model\Kajuan as KajuanModel;
+use app\api\model\Log;
 use app\api\model\Usercardlog;
 use app\api\service\BaseToken;
 use app\api\service\kajuan\CheckCardDetail;
@@ -73,7 +74,7 @@ class Kajuan
             'cardId' => $sign['card_id'],
 //            'ticket' => $sign['api_ticket'],
         );
-        return $cardArry;
+        throw new Success(['data'=>$cardArry]);
     }
 
 
@@ -106,7 +107,8 @@ class Kajuan
         // new解密类 -> go方法解密
         $jiemicode = new JiemiCode();
         $jiemi_code = $jiemicode->go($code);
-        return $jiemi_code;
+
+        throw new Success(['data'=>$jiemi_code]);
     }
 
 
@@ -118,11 +120,11 @@ class Kajuan
 
         // 写入记录
         $data = Usercardlog::create(['user_id'=>$uid,'card_id'=>$card_id]);
-        if(!$data){
+        if($data === false){
             // ******写入失败记录日志
-            throw new QueryDbException(['msg'=>'asdasd']);
+            Log::mysql_log('mysql/Kajuan/user_card_log','写入卡劵领取记录失败');
         }
-        throw new Success();
+        throw new Success(['data'=>$data]);
     }
 
 

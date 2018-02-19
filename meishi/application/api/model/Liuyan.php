@@ -44,22 +44,18 @@ class Liuyan extends Model
     public static function createLiuyan_Model($params){
 
         $data = self::create($params);
-        if(!$data){
-            // ******mysql新增留言失败，日志，返回
+        if($data === false){
+            // mysql新增留言失败，日志，返回
+            Log::mysql_log('mysql/Liuyan/createLiuyan','新增留言失败');
         }
 
         // 删除redis中餐厅详情
         $id = $params['canting_id'];
         $cantingDetail = Cache::rm('cantingDetail-'.$id);
         if(!$cantingDetail){
-            // ****** redis删除餐厅详情失败，记录日志
+            // redis删除餐厅详情失败，记录日志
+            Log::redis_log('redis/Liuyan/createLiuyan','redis删除指定留言失败');
         }
-
-        // 删除redis中餐厅列表(不需要删除餐厅列表，因为列表不显示留言的数据)
-//        $cantingList = Cache::rm('cantingList');
-//        if(!$cantingList){
-//            // ****** redis删除餐厅列表失败，记录日志
-//        }
 
         throw new Success(['data'=>$data]);
     }
@@ -68,19 +64,12 @@ class Liuyan extends Model
     // 查询留言分页列表（根据餐厅ID,客户端餐厅详情页-查看全部留言）
     public static function liuyanList_Model($post_id,$post_page){
 
-
         $data = self::where('canting_id',$post_id)->with(['liuyanuserinfo'])->order('create_time desc')->page($post_page,20)->select();
-        if(!$data){
+        if($data === false){
             // ****** 查询留言分页列表失败，日志，返回
+            Log::mysql_log('mysql/Liuyan/liuyanList','查询留言分页列表失败');
         }
         throw new Success(['data'=>$data]);
-//        $count = $liuyanModel->where('canting_id',$post_id)->count();
-//        if(!$data || !$count){
-//            throw new QueryDbException(['msg'=>' 根据餐厅ID查询留言列表失败，Liuyan/liuyanList()']);
-//        }
-//        $res['data'] = $data;
-//        $res['count'] = $count;
-//        return $res;
     }
 
 
@@ -92,13 +81,14 @@ class Liuyan extends Model
         // 根据uid统计有多少条留言
         $count = self::where('user_id',$uid)->count();
         // 查询失败
-        if($data === false && $count === false){
-            throw new QueryDbException(['errorCode'=>1,'msg'=>'查询我的留言失败，Liuyan/getMyLiuyan()']);
+        if($data === false || $count === false){
+            Log::mysql_log('mysql/Liuyan/getMyLiuyan','查询我的留言失败');
         }
         // 拼接数据
         $res['data'] = $data;
         $res['count'] = $count;
         // 成功返回
         throw new Success(['data' => $res]);
+
     }
 }

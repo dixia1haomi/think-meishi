@@ -10,11 +10,10 @@ namespace app\api\controller;
 
 use app\api\model\Liuyan;
 use app\api\model\User as userModel;
-use app\api\model\Userhuati;
 use app\api\service\BaseToken;
 use app\api\model\Userinfo as userinfoModel;
 use app\exception\QueryDbException;
-
+use app\exception\Success;
 
 
 class User
@@ -50,13 +49,13 @@ class User
     }
 
     // 查询我的话题（根据uid-客户端我的页-我的话题）(关联话题名)（排序-根据创建时间，分页-20条）
-    public function getMyHuati(){
-        $uid = BaseToken::get_Token_Uid();
-        $post_page = input('post.page');
-
-        // 根据uid查所有留言
-        Userhuati::getMyHuati_Model($uid,$post_page);
-    }
+//    public function getMyHuati(){
+//        $uid = BaseToken::get_Token_Uid();
+//        $post_page = input('post.page');
+//
+//        // 根据uid查所有留言
+//        Userhuati::getMyHuati_Model($uid,$post_page);
+//    }
 
     // 查询用户参与发表的话题（接受uid，客户端-我的-话题）
 //    public function userHuatiList()

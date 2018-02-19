@@ -31,15 +31,6 @@ Route::post('api/liuyan/create', 'api/liuyan/createLiuyan');            // 新�
 Route::post('api/liuyan/delete', 'api/liuyan/deleteLiuyan');            // 删除留言（内部获取uid，接受id-客户端我的页-我的留言）
 
 
-// 菜品
-//Route::post('api/caipin/createcaipin', 'api/caipin/createCaipin');    // 新增菜品
-//Route::post('api/caipin/updateCaipin', 'api/caipin/updateCaipin');    // 更新菜品
-//Route::post('api/caipin/deleteCaipin', 'api/caipin/deleteCaipin');    // 删除菜品
-
-// 环境
-//Route::post('api/huanjing/createhuanjing', 'api/huanjing/createHuanjing');    // 新增环境
-//Route::post('api/huanjing/updatehuanjing', 'api/huanjing/updateHuanjing');    // 更新环境
-//Route::post('api/huanjing/deletehuanjing', 'api/huanjing/deleteHuanjing');    // 删除环境
 
 // 文章
 Route::post('api/wenzhang/createwenzhang', 'api/wenzhang/createWenzhang');    // 新增文章
@@ -70,13 +61,13 @@ Route::post('api/user/myhuati', 'api/user/getMyHuati');          // 查询我的
 
 
 // 话题
-Route::post('api/huati/create', 'api/huati/createHuati');             // 新增话题（admin）
-Route::post('api/huati/update', 'api/huati/updateHuati');             // 更新话题（admin）
-Route::post('api/huati/delete', 'api/huati/deleteHuati');             // 删除话题（admin）
-Route::post('api/huati/list', 'api/huati/getHuatiList');              // 查询话题列表（话题页）
-Route::post('api/huati/createhuati', 'api/huati/createUserHuati');    // 用户参与话题,新增user话题（话题页-点击话题进入话题详情页）
-Route::post('api/huati/detail', 'api/huati/getHuatiDetail');          // 查询话题内容（根据话题ID）（话题页-点击话题进入话题详情页）查询关联的所有数据
-Route::post('api/huati/deletehuati', 'api/huati/deleteUserHuati');    // 删除用户参与的话题（admin，客户端暂不开放）
+//Route::post('api/huati/create', 'api/huati/createHuati');             // 新增话题（admin）
+//Route::post('api/huati/update', 'api/huati/updateHuati');             // 更新话题（admin）
+//Route::post('api/huati/delete', 'api/huati/deleteHuati');             // 删除话题（admin）
+//Route::post('api/huati/list', 'api/huati/getHuatiList');              // 查询话题列表（话题页）
+//Route::post('api/huati/createhuati', 'api/huati/createUserHuati');    // 用户参与话题,新增user话题（话题页-点击话题进入话题详情页）
+//Route::post('api/huati/detail', 'api/huati/getHuatiDetail');          // 查询话题内容（根据话题ID）（话题页-点击话题进入话题详情页）查询关联的所有数据
+//Route::post('api/huati/deletehuati', 'api/huati/deleteUserHuati');    // 删除用户参与的话题（admin，客户端暂不开放）
 
 
 

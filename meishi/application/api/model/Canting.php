@@ -46,13 +46,15 @@ class Canting extends Model
             // 缓存中没有餐厅列表,去数据库获取后再缓存
             if(!$cantingList){
                 $data = self::select();
-                if(!$data){
-                    // *如果从数据库获取失败，记录日志
+                if($data === false){
+                    // *如果从数据库获取失败，记录日志,写入日志并且抛出errorCode等于1
+                    Log::mysql_log('mysql/Canting/cantingList','获取餐厅列表失败');
                 }
                 // 获取成功，缓存
                 $cache = cache('cantingList',json_encode($data));
                 if(!$cache){
                     // *如果缓存失败，记录日志
+                    Log::redis_log('redis/Canting/cantingList','redis写入餐厅列表失败');
                 }
                 // 返回客户端
                 throw new Success(['data'=>$data]);
@@ -63,8 +65,9 @@ class Canting extends Model
         }else{
             // 有where条件，查数据库
             $data = self::where($post)->select();
-            if(!$data){
+            if($data === false){
                 // *如果从数据库获取失败，记录日志返回错误码
+                Log::mysql_log('mysql/Canting/cantingList','获取餐厅列表失败');
             }
             throw new Success(['data'=>$data]);
         }
@@ -80,13 +83,15 @@ class Canting extends Model
         if(!$cantingDetail){
             // 从数据库获取
             $data = self::with(['liuyan','wenzhang'])->withCount(['liuyanCount'])->find($id);   //withCount(['liuyan_count'])->
-            if(!$data){
+            if($data === false){
                 // *如果从数据库获取失败，记录日志
+                Log::mysql_log('mysql/Canting/cantingDetail','获取餐厅详细信息失败');
             }
             // 缓存
             $cache = cache('cantingDetail-'.$id,json_encode($data));
             if(!$cache){
                 // *如果缓存失败，记录日志
+                Log::redis_log('redis/Canting/cantingDetail','redis获取餐厅详细信息失败');
             }
             throw new Success(['data'=>$data]);
         }else{
@@ -100,13 +105,15 @@ class Canting extends Model
     {
         // 新增餐厅也要删除redis餐厅列表缓存
         $data = self::create($param);
-        if(!$data){
+        if($data === false){
             // *新增餐厅到数据库失败，记录日志
+            Log::mysql_log('mysql/Canting/createCanting','新增餐厅失败');
         }
         // 新增成功后删除缓存
         $cantingList = Cache::rm('cantingList');
         if(!$cantingList){
             // *删除餐厅列表缓存失败，记录日志
+            Log::redis_log('redis/Canting/createCanting','redis删除餐厅列表失败');
         }
         throw new Success(['data'=>$data]);
     }
@@ -118,8 +125,9 @@ class Canting extends Model
         // 更新数据库
         $data = self::update($param);
         // *是不是这样判断更新成功还是失败
-        if(!$data){
+        if($data === false){
             // *数据库更新失败，记录日志
+            Log::mysql_log('mysql/Canting/updateCanting','更新餐厅失败');
         }
         // 更新成功后删除redis相应的数据，cantingDetail，cantingList
         $id = $param['id'];
@@ -128,12 +136,14 @@ class Canting extends Model
         $cantingDetail = Cache::rm('cantingDetail-'.$id);
         if(!$cantingDetail){
             // *删除餐厅详情缓存失败，记录日志
+            Log::redis_log('redis/Canting/updateCanting','redis删除餐厅详情失败');
         }
 
         // 删除餐厅列表
         $cantingList = Cache::rm('cantingList');
         if(!$cantingList){
             // *删除餐厅列表缓存失败，记录日志
+            Log::redis_log('redis/Canting/updateCanting','redis删除餐厅列表失败');
         }
 
         throw new Success(['data'=>$data]);

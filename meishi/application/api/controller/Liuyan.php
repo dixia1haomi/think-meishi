@@ -9,8 +9,11 @@
 namespace app\api\controller;
 
 use app\api\model\Liuyan as liuyanModel;
+use app\api\model\Log;
 use app\api\service\BaseToken;
 use app\exception\QueryDbException;
+use app\exception\Success;
+use think\Cache;
 
 class Liuyan
 {
@@ -38,27 +41,35 @@ class Liuyan
     // 删除留言（客户端未开放使用，admin先用）
     public function deleteLiuyan(){
         $uid = BaseToken::get_Token_Uid();
-//        $uid = input('post.uid');
         $post_id = input('post.id');
 
         $liuyanModel = new liuyanModel();
 
         // 自己才可以删除自己的数据（uid=user_id,证明是自己的，防止直接恶意调用api）
         $data = $liuyanModel->get($post_id);
-        if(!$data){throw new QueryDbException(['msg'=>'删除留言时查询留言失败,可能已经删除，没有这条数据']);}
+        if($data === false){
+            Log::mysql_log('mysql/Liuyan/deleteLiuyan','查询留言失败');
+        }
 
         // 如果留言数据的user_id不等于uid，不是自己的，可能是恶意调用，抛出异常.
         if($data['user_id'] != $uid){
-            throw new QueryDbException(['msg'=>'这条数据不是你的.']);
+            Log::mysql_log('mysql/Liuyan/deleteLiuyan','删除留言时恶意调用，数据不是该用户的');
         }
 
         // 执行删除
         $delete = $liuyanModel->destroy($post_id);
-        if(!$delete){
-            throw new QueryDbException(['msg'=>'删除留言失败']);
+        if($delete === false){
+            Log::mysql_log('mysql/Liuyan/deleteLiuyan','删除留言失败');
         }
-        return $delete;
 
+        // 这里要删除redis 餐厅详情
+        $cache = Cache::rm('cantingDetail-'.$data['canting_id']);
+        if(!$cache){
+            // 删除redis数据失败，记录日志，返回错误码
+            Log::redis_log('redis/Liuyan/deleteLiuyan','redis删除指定餐厅失败');
+        }
+
+        throw new Success(['data'=>$delete]);
     }
 
 

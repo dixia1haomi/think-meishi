@@ -15,7 +15,7 @@ class User extends Model
 {
     //查询用户是否存在，通过openid查询
     public static function getByOpenid($openid){
-        return self::where('openid','=',$openid)->find();
+        return self::where('openid',$openid)->find();
     }
 
     //新增用户,返回id
