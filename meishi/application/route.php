@@ -72,9 +72,9 @@ Route::post('api/user/myhuati', 'api/user/getMyHuati');          // 查询我的
 
 
 // 客服
-Route::get('api/kefu/getkefu', 'api/kefu/getKefu');             // *客服接口  gzh_accsee_token
-Route::post('api/kefu/gzhacc', 'api/Kefu/gzh_accsee_token');
-Route::post('api/kefu/code', 'api/Kefu/jiemi_opencard_code');
+//Route::get('api/kefu/getkefu', 'api/kefu/getKefu');             // *客服接口  gzh_accsee_token
+//Route::post('api/kefu/gzhacc', 'api/Kefu/gzh_accsee_token');
+//Route::post('api/kefu/code', 'api/Kefu/jiemi_opencard_code');
 
 // 卡劵
 Route::post('api/kajuan/select', 'api/Kajuan/select_Kajuan');                             // 查询优惠商家列表

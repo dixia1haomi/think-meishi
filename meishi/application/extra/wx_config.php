@@ -9,8 +9,13 @@
 return [
 
     // 小程序微信获取openid配置信息
+    // 美食+
     'appid' => 'wxc75cc337c464fc84',
     'secret' => '6632e8fab317eb2b9cdad48fe9e3cc86',
+
+    // 课外
+//    'appid' => 'wx4db8544fbae664b1',
+//    'secret' => '44089888e037bbda9f1d38a4d54a686d',
     'login_url' => 'https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code',
 
     //token过期时间

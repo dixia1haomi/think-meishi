@@ -60,9 +60,9 @@ return [
     // 禁止访问模块
     'deny_module_list'       => ['common'],
     // 默认控制器名
-    'default_controller'     => 'Index',
+    'default_controller'     => 'Kefu',
     // 默认操作名
-    'default_action'         => 'index',
+    'default_action'         => 'getkefu',
     // 默认验证器
     'default_validate'       => '',
     // 默认的空控制器名
@@ -166,7 +166,7 @@ return [
 
     'log'                    => [
         // 日志记录方式，内置 file socket 支持扩展
-        'type'  => 'Test',
+        'type'  => 'File',
         // 日志保存目录
         'path'  => LOG_PATH,
         // 日志记录级别

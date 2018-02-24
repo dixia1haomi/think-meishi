@@ -9,6 +9,7 @@
 namespace app\api\service;
 
 
+use app\exception\Success;
 use app\exception\TokenException;
 use app\exception\WeChatException;
 use think\Exception;
@@ -49,7 +50,8 @@ class UserToken
                 ]);
             }else{
                 //授予Token，接受微信返回的数据，操作数据库.
-                return $this->grantToken($wxResult);
+//                return $this->grantToken($wxResult);
+                throw new Success(['data'=>$this->grantToken($wxResult)]);
             }
         }
     }
