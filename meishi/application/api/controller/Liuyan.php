@@ -38,7 +38,7 @@ class Liuyan
 
 
 
-    // 删除留言（客户端未开放使用，admin先用）
+    // 删除留言
     public function deleteLiuyan(){
         $uid = BaseToken::get_Token_Uid();
         $post_id = input('post.id');

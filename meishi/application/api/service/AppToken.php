@@ -10,6 +10,7 @@ namespace app\api\service;
 
 
 use app\api\model\ThirdApp;
+use app\exception\Success;
 use app\exception\TokenException;
 
 class AppToken extends BaseToken
@@ -34,8 +35,8 @@ class AppToken extends BaseToken
             ];
             // 生成并缓存Token
             $token = $this->saveToCache($values);
+
             return $token;
-//            return '查询通过';
         }
     }
 

@@ -10,7 +10,6 @@ namespace app\api\controller;
 
 use app\api\model\Canting as cantingModel;
 use app\api\model\Log;
-use app\api\model\Xingping as xingpingModel;
 use app\api\service\BaseToken;
 use app\exception\QueryDbException;
 
@@ -18,7 +17,7 @@ use app\exception\QueryDbException;
 use app\exception\Success;
 use think\cache\driver\Redis;
 
-class Canting
+class Canting extends BaseController
 {
 
     /**
@@ -79,6 +78,10 @@ class Canting
     // -------------------------------------------------------- Admin ----------------------------------------------------------------
     // -------------------------------------------------------- Admin ----------------------------------------------------------------
 
+    // ----------------------前置方法定义，验证管理员身份----------------------
+    protected $beforeActionList = [
+        'checkAdmin' => ['only' => 'createCanting,updateCanting,deleteCanting'],
+    ];
 
 
 

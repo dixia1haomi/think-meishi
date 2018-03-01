@@ -24,9 +24,10 @@ class BaseToken
     //准备令牌的value，
     //接受微信返回的数据和数据库返回的用户id
     //返回字符串,(原本是数组，但是框架的缓存只接受字符串value,所以json_encode)
-    public static function prepare_Token_Value($wxResult, $uid)
+    public static function prepare_Token_Value($openid, $uid)
     {
-        $tokenValue = $wxResult;
+        $tokenValue = [];
+        $tokenValue['openid'] = $openid;
         $tokenValue['uid'] = $uid;
         $tokenValue['scope'] = 16;
         return json_encode($tokenValue);
@@ -46,18 +47,19 @@ class BaseToken
         return md5($rand_str.$time.$token_salt);
     }
 
+    // 生成token，缓存并返回
+    public static function save_Cache_Token($openid,$uid){
+        $tokenKey = BaseToken::prepare_Token_Key();                          //获取token_key
+        $tokenValue = BaseToken::prepare_Token_Value($openid,$uid);          //获取token_value
+        $token_expire = config('wx_config.token_expire');                    //获取token过期时间
 
-    // 检查token是否有效
-    public static function verifyToken($token)
-    {
-        $exist = Cache::get($token);
-        if($exist){
-            return true;
+        $token = cache($tokenKey,$tokenValue,$token_expire);    //缓存token
+        if(!$token){
+            throw new TokenException(['msg' => '缓存token时异常，来自save_Cache_Token']);
         }
-        else{
-            return false;
-        }
+        return $tokenKey;
     }
+
 
 
     // *获取uid（包含检查权限，获取uid应调用这个方法）
@@ -106,5 +108,22 @@ class BaseToken
         }
     }
 
+
+
+    // 验证管理员身份
+    public static function checkScope()
+    {
+        $scope = self::get_Token_Value_Vars('scope');
+        if ($scope) {
+            if ($scope > 16) {
+                return true;
+            }
+            else{
+                throw new TokenException(['msg'=>'需要管理员权限']);
+            }
+        } else {
+            throw new TokenException(['msg'=>'获取scope失败，BaseToken/checkScope']);
+        }
+    }
 
 }

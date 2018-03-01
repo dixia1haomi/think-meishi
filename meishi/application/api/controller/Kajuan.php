@@ -21,7 +21,7 @@ use app\exception\Success;
 use think\Exception;
 
 
-class Kajuan
+class Kajuan extends BaseController
 {
 
     // 查询卡劵列表(客户端index页用)
@@ -128,21 +128,23 @@ class Kajuan
     }
 
 
-    // 我的卡劵（查询用户名下已领取的所有卡劵,用于客户端调用后打开卡包）需要UID
-//    public function my_kajuan(){
-//        // 用户ID
-//        $uid = BaseToken::get_Token_Uid();
-//
-//        // 查询数据库
-//        $usercard = new Usercard();
-//        $data = $usercard->where('user_id',$uid)->select();
-//
-//        if(!$data){
-//            throw new QueryDbException(['msg'=>'查询用户名下已领取的所有卡劵失败，kajuan/my_kajuan']);
-//        }
-//        return $data;
-//    }
 
+
+    // -------------------------------------------------------- Admin ----------------------------------------------------------------
+    // -------------------------------------------------------- Admin ----------------------------------------------------------------
+    // -------------------------------------------------------- Admin ----------------------------------------------------------------
+
+    // ----------------------前置方法定义，验证管理员身份----------------------
+    protected $beforeActionList = [
+        'checkAdmin' => ['only' => 'createCanting,updateCanting,deleteCanting'],
+    ];
+
+
+    // 添加卡劵
+
+    // 更新卡劵
+
+    // 删除卡劵
 
 
 }

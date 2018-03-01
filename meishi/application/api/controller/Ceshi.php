@@ -9,18 +9,16 @@
 namespace app\api\controller;
 
 
+use app\api\service\userinfo\GetUserInfo;
 use think\Cache;
 
 class Ceshi
 {
 
     public function index(){
-        $a = ['id'=>1,'name'=>2];
-
-//        return Cache::rm('a');
-//    return Cache::set('b',$a);
-        $cache = new Cache();
-return $cache->set('b',$a);
-
+//        $post = input('post.');
+//        return $post;
+        $getinfo = new GetUserInfo();
+        return $getinfo->jiemi();
     }
 }

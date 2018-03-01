@@ -22,6 +22,6 @@ class ThirdApp extends Model
             Log::mysql_log('mysql/ThirdApp/check','admin检查未通过');
         }
 
-        throw new Success(['data'=>$app]);
+        return $app;
     }
 }

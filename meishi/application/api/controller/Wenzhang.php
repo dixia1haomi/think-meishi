@@ -13,8 +13,20 @@ use app\api\model\Wenzhang as wenzhangModel;
 use app\exception\QueryDbException;
 use app\exception\Success;
 
-class Wenzhang
+class Wenzhang extends BaseController
 {
+
+    // -------------------------------------------------------- Admin ----------------------------------------------------------------
+    // -------------------------------------------------------- Admin ----------------------------------------------------------------
+    // -------------------------------------------------------- Admin ----------------------------------------------------------------
+
+    // ----------------------前置方法定义，验证管理员身份----------------------
+    protected $beforeActionList = [
+        'checkAdmin' => ['only' => 'createWenzhang,updateWenzhang,deleteWenzhang'],
+    ];
+
+
+
     // 新增文章
     public function createWenzhang()
     {
