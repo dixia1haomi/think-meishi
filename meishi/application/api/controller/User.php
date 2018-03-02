@@ -11,7 +11,6 @@ namespace app\api\controller;
 use app\api\model\Liuyan;
 use app\api\model\User as userModel;
 use app\api\service\BaseToken;
-use app\api\model\Userinfo as userinfoModel;
 use app\exception\QueryDbException;
 use app\exception\Success;
 
@@ -20,22 +19,22 @@ class User
 {
 
     // 根据uid检查userinfo表中是否有用户信息,(有：返回errorCode = 0和查到的用户信息,没有：返回errorCode=1)（app.js初始化时调用）
-    public function uidCheckInfo(){
-
-        $uid = BaseToken::get_Token_Uid();
-
-        userinfoModel::uidCheckInfo($uid);
-    }
+//    public function uidCheckInfo(){
+//
+//        $uid = BaseToken::get_Token_Uid();
+//
+//        userinfoModel::uidCheckInfo($uid);
+//    }
 
 
     // 用户登陆(检查是否有info信息，有再对比，不一样更新，没有新增)（app.js appData.loginState为false时调用）
-    public function userLogin()
-    {
-        $uid = BaseToken::get_Token_Uid();
-        $post = input('post.');
-
-        userinfoModel::login($uid,$post);
-    }
+//    public function userLogin()
+//    {
+//        $uid = BaseToken::get_Token_Uid();
+//        $post = input('post.');
+//
+//        userinfoModel::login($uid,$post);
+//    }
 
 
 

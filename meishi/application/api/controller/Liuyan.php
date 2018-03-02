@@ -11,7 +11,6 @@ namespace app\api\controller;
 use app\api\model\Liuyan as liuyanModel;
 use app\api\model\Log;
 use app\api\service\BaseToken;
-use app\exception\QueryDbException;
 use app\exception\Success;
 use think\Cache;
 

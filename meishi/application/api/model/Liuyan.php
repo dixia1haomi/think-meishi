@@ -21,7 +21,7 @@ class Liuyan extends Model
     // 关联->userinfo(只要昵称，头像绑定到调用它的表上-餐厅Model/liuyan（）调用)
     public function liuyanuserinfo()
     {
-        return $this->hasOne('userinfo', 'user_id', 'user_id')->bind(['nick_name','avatar_url']);
+        return $this->hasOne('user', 'id', 'user_id')->bind(['nick_name','avatar_url']);  // ->bind(['nick_name','avatar_url'])
     }
 
 
@@ -31,11 +31,7 @@ class Liuyan extends Model
         return $this->hasOne('canting', 'id', 'canting_id')->bind(['name']);
     }
 
-    // 关联->userinfo
-//    public function userinfo()
-//    {
-//        return $this->hasOne('userinfo', 'user_id', 'user_id');
-//    }
+
 
 
 

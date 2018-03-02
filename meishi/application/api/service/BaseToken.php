@@ -111,7 +111,7 @@ class BaseToken
 
 
     // 验证管理员身份
-    public static function checkScope()
+    public static function checkAdminScope()
     {
         $scope = self::get_Token_Value_Vars('scope');
         if ($scope) {

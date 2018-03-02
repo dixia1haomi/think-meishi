@@ -18,6 +18,6 @@ class BaseController extends Controller
     // 管理员身份验证
     protected function checkAdmin()
     {
-        BaseToken::checkScope();
+        BaseToken::checkAdminScope();
     }
 }
