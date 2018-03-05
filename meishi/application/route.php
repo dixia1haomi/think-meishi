@@ -46,8 +46,8 @@ Route::post('api/cos/delete', 'api/cos/cosdelete');                 // 删除
 
 // Token
 Route::post('api/token/gettoken', 'api/token/getToken');   // 获取Token
-Route::post('api/token/verify', 'api/token/verifyToken');   // 检查Token是否有效
-Route::post('api/token/app', 'api/token/getAppToken');    //第三方登录获取token
+Route::post('api/token/verify', 'api/token/verifyToken');  // 检查Token是否有效
+Route::post('api/token/app', 'api/token/getAppToken');     //第三方登录获取token
 
 
 // User

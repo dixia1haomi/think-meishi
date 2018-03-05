@@ -21,7 +21,7 @@ class Log extends Model
         self::create(['laiyuan'=>$laiyuan,'miaoshu'=>$miaoshu]);
 
         // 抛出errorCode等于1
-        throw new QueryDbException();
+//        throw new QueryDbException();
     }
 
 

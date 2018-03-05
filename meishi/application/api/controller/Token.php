@@ -88,16 +88,18 @@ class Token
 
     // 获取第三方令牌（*）
     /**
+     * API
      * 第三方应用获取令牌
      * @url /app_token?
      * @POST ac=:ac se=:secret
      */
     public function getAppToken($ac = '', $se = '')
     {
-        header('Access-Control-Allow-Origin: *');
-        header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-        header('Access-Control-Allow-Methods: GET');
+//        header('Access-Control-Allow-Origin: *');
+//        header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+//        header('Access-Control-Allow-Methods: GET');
 //        (new AppTokenValidate())->goCheck();
+
         $app = new AppToken();
         $token = $app->getThirdAppTokenService($ac, $se);
 

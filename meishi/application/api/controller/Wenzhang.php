@@ -12,6 +12,7 @@ use app\api\model\Log;
 use app\api\model\Wenzhang as wenzhangModel;
 use app\exception\QueryDbException;
 use app\exception\Success;
+use think\Cache;
 
 class Wenzhang extends BaseController
 {
@@ -37,8 +38,28 @@ class Wenzhang extends BaseController
         if($data === false){
             Log::mysql_log('mysql/Wenzhang/createWenzhang','新增文章失败');
         }
+
+        // 更新成功后删除redis相应的数据，cantingDetail，cantingList
+        $id = $param['canting_id'];
+
+        // 删除对应的餐厅详情
+        $cantingDetail = Cache::rm('cantingDetail-'.$id);
+        if(!$cantingDetail){
+            // *删除餐厅详情缓存失败，记录日志
+            Log::redis_log('redis/Canting/updateCanting','redis删除餐厅详情失败');
+        }
+
+        // 删除餐厅列表
+        $cantingList = Cache::rm('cantingList');
+        if(!$cantingList){
+            // *删除餐厅列表缓存失败，记录日志
+            Log::redis_log('redis/Canting/updateCanting','redis删除餐厅列表失败');
+        }
+
         throw new Success(['data'=>$data]);
     }
+
+
 
     // 更新文章
     public function updateWenzhang(){
@@ -50,6 +71,24 @@ class Wenzhang extends BaseController
         if ($data === false) {
             Log::mysql_log('mysql/Wenzhang/updateWenzhang','更新文章失败');
         }
+
+        // 更新成功后删除redis相应的数据，cantingDetail，cantingList
+        $id = $param['canting_id'];
+
+        // 删除对应的餐厅详情
+        $cantingDetail = Cache::rm('cantingDetail-'.$id);
+        if(!$cantingDetail){
+            // *删除餐厅详情缓存失败，记录日志
+            Log::redis_log('redis/Canting/updateCanting','redis删除餐厅详情失败');
+        }
+
+        // 删除餐厅列表
+        $cantingList = Cache::rm('cantingList');
+        if(!$cantingList){
+            // *删除餐厅列表缓存失败，记录日志
+            Log::redis_log('redis/Canting/updateCanting','redis删除餐厅列表失败');
+        }
+
         throw new Success(['data'=>$data]);
     }
 
