@@ -43,11 +43,11 @@ class Wenzhang extends BaseController
         $id = $param['canting_id'];
 
         // 删除对应的餐厅详情
-        $cantingDetail = Cache::rm('cantingDetail-'.$id);
-        if(!$cantingDetail){
-            // *删除餐厅详情缓存失败，记录日志
-            Log::redis_log('redis/Canting/updateCanting','redis删除餐厅详情失败');
-        }
+//        $cantingDetail = Cache::rm('cantingdetail'.$id);
+//        if(!$cantingDetail){
+//            // *删除餐厅详情缓存失败，记录日志
+//            Log::redis_log('redis/Canting/updateCanting','redis删除餐厅详情失败');
+//        }
 
         // 删除餐厅列表
         $cantingList = Cache::rm('cantingList');
@@ -76,11 +76,11 @@ class Wenzhang extends BaseController
         $id = $param['canting_id'];
 
         // 删除对应的餐厅详情
-        $cantingDetail = Cache::rm('cantingDetail-'.$id);
-        if(!$cantingDetail){
-            // *删除餐厅详情缓存失败，记录日志
-            Log::redis_log('redis/Canting/updateCanting','redis删除餐厅详情失败');
-        }
+//        $cantingDetail = Cache::rm('cantingdetail'.$id);
+//        if(!$cantingDetail){
+//            // *删除餐厅详情缓存失败，记录日志
+//            Log::redis_log('redis/Canting/updateCanting','redis删除餐厅详情失败');
+//        }
 
         // 删除餐厅列表
         $cantingList = Cache::rm('cantingList');
@@ -96,12 +96,29 @@ class Wenzhang extends BaseController
     // 删除文章
     public function deleteWenzhang(){
         $id = input('post.id');
+        $canting_id = input('post.canting_id');
         // 参数验证（*）
 
         $data = wenzhangModel::destroy($id);
         if ($data === false) {
             Log::mysql_log('mysql/Wenzhang/deleteWenzhang','删除文章失败');
         }
+
+        // 删除成功后删除redis相应的数据，cantingDetail，cantingList
+        // 删除对应的餐厅详情
+//        $cantingDetail = Cache::rm('cantingdetail'.$canting_id);
+//        if(!$cantingDetail){
+//            // *删除餐厅详情缓存失败，记录日志
+//            Log::redis_log('redis/Canting/updateCanting','redis删除餐厅详情失败');
+//        }
+
+        // 删除餐厅列表
+        $cantingList = Cache::rm('cantingList');
+        if(!$cantingList){
+            // *删除餐厅列表缓存失败，记录日志
+            Log::redis_log('redis/Canting/updateCanting','redis删除餐厅列表失败');
+        }
+
         throw new Success(['data'=>$data]);
     }
 }

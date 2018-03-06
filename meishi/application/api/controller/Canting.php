@@ -15,6 +15,7 @@ use app\exception\QueryDbException;
 
 // ------------
 use app\exception\Success;
+use think\Cache;
 use think\cache\driver\Redis;
 
 class Canting extends BaseController
@@ -69,6 +70,22 @@ class Canting extends BaseController
         if($data === false){
             Log::mysql_log('mysql/Canting/dianzanCanting','餐厅点赞失败');
         }
+
+        // 删除成功后删除redis相应的数据，cantingDetail，cantingList
+        // 删除对应的餐厅详情
+//        $cantingDetail = Cache::rm('cantingdetail'.$post_id);
+//        if(!$cantingDetail){
+//            // *删除餐厅详情缓存失败，记录日志
+//            Log::redis_log('redis/Canting/updateCanting','redis删除餐厅详情失败');
+//        }
+
+        // 删除餐厅列表
+        $cantingList = Cache::rm('cantingList');
+        if(!$cantingList){
+            // *删除餐厅列表缓存失败，记录日志
+            Log::redis_log('redis/Canting/updateCanting','redis删除餐厅列表失败');
+        }
+
         throw new Success(['data'=>$data]);
     }
 

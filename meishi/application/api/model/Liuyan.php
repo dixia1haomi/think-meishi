@@ -47,11 +47,11 @@ class Liuyan extends Model
 
         // 删除redis中餐厅详情
         $id = $params['canting_id'];
-        $cantingDetail = Cache::rm('cantingDetail-'.$id);
-        if(!$cantingDetail){
-            // redis删除餐厅详情失败，记录日志
-            Log::redis_log('redis/Liuyan/createLiuyan','redis删除指定留言失败');
-        }
+//        $cantingDetail = Cache::rm('cantingdetail'.$id);
+//        if(!$cantingDetail){
+//            // redis删除餐厅详情失败，记录日志
+//            Log::redis_log('redis/Liuyan/createLiuyan','redis删除指定留言失败');
+//        }
 
         throw new Success(['data'=>$data]);
     }

@@ -73,6 +73,11 @@ Route::post('api/kajuan/code', 'api/Kajuan/jiemi_code');                        
 Route::post('api/kajuan/signature', 'api/Kajuan/get_kajuan_signature');                   // 获取卡劵signature（后续用于调用wx.addcard）
 Route::post('api/kajuan/log', 'api/Kajuan/user_card_log');                                // 卡劵领取记录(接受卡劵ID)
 
+Route::post('api/kajuan/create', 'api/Kajuan/createKajuan');                              // 新增卡劵
+Route::post('api/kajuan/update', 'api/Kajuan/updateKajuan');                              // 更新卡劵
+Route::post('api/kajuan/delete', 'api/Kajuan/deleteKajuan');                              // 删除卡劵
+
+
 
 // 测试专用
 Route::post('api/ceshi/index', 'api/ceshi/index');

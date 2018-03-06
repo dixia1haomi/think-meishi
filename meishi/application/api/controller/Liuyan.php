@@ -62,11 +62,11 @@ class Liuyan
         }
 
         // 这里要删除redis 餐厅详情
-        $cache = Cache::rm('cantingDetail-'.$data['canting_id']);
-        if(!$cache){
-            // 删除redis数据失败，记录日志，返回错误码
-            Log::redis_log('redis/Liuyan/deleteLiuyan','redis删除指定餐厅失败');
-        }
+//        $cache = Cache::rm('cantingdetail'.$data['canting_id']);
+//        if(!$cache){
+//            // 删除redis数据失败，记录日志，返回错误码
+//            Log::redis_log('redis/Liuyan/deleteLiuyan','redis删除指定餐厅失败');
+//        }
 
         throw new Success(['data'=>$delete]);
     }
