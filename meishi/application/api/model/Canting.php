@@ -45,7 +45,7 @@ class Canting extends Model
             $cantingList = cache('cantingList');
             // 缓存中没有餐厅列表,去数据库获取后再缓存
             if (!$cantingList) {
-                $data = self::where('state', 1)->select();
+                $data = self::where('state', 1)->order('create_time desc')->select();
                 if ($data === false) {
                     // *如果从数据库获取失败，记录日志,写入日志并且抛出errorCode等于1
                     Log::mysql_log('mysql/Canting/cantingList', '获取餐厅列表失败');
@@ -64,7 +64,7 @@ class Canting extends Model
             }
         } else {
             // 客户端传了where条件，查数据库
-            $data = self::where('state', 1)->where($post)->select();
+            $data = self::where('state', 1)->order('create_time desc')->where($post)->select();
             if ($data === false) {
                 // *如果从数据库获取失败，记录日志返回错误码
                 Log::mysql_log('mysql/Canting/cantingList', '获取餐厅列表失败');

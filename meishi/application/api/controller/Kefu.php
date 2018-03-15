@@ -9,9 +9,9 @@
 namespace app\api\controller;
 
 
-
 use app\api\service\AccessToken;
 use think\Exception;
+
 //header("Content-type: text/html; charset=utf-8");
 
 
@@ -22,19 +22,23 @@ class Kefu
     // http://www.cnblogs.com/objects/p/7889088.html
 
 
-    public function index(){
+    public function index()
+    {
         return 'index';
     }
-    public function qwe(){
+
+    public function qwe()
+    {
         return 'qwe1';
     }
 
     // 未成功，是不是要发布后才有效？待测试。
 
-    public function getkefu(){     //校验服务器地址URL
+    public function getkefu()
+    {     //校验服务器地址URL
         if (isset($_GET['echostr'])) {
             $this->valid();
-        }else{
+        } else {
             $this->responseMsg();
         }
     }
@@ -43,7 +47,7 @@ class Kefu
     public function valid()
     {
         $echoStr = $_GET["echostr"];
-        if($this->checkSignature()){
+        if ($this->checkSignature()) {
 //            header('content-type:text');
             ob_clean();
 //            header('content-type:text');
@@ -62,12 +66,12 @@ class Kefu
         $token = 'dixia2haomi';
         $tmpArr = array($token, $timestamp, $nonce);
         sort($tmpArr, SORT_STRING);
-        $tmpStr = implode( $tmpArr );
-        $tmpStr = sha1( $tmpStr );
+        $tmpStr = implode($tmpArr);
+        $tmpStr = sha1($tmpStr);
 
-        if( $tmpStr == $signature ){
+        if ($tmpStr == $signature) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -81,33 +85,33 @@ class Kefu
 //        $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         $postStr = file_get_contents("php://input");
 
-        if (!empty($postStr) && is_string($postStr)){
+        if (!empty($postStr) && is_string($postStr)) {
             //禁止引用外部xml实体
             //libxml_disable_entity_loader(true);
 
             //$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-            $postArr = json_decode($postStr,true);
-            if(!empty($postArr['MsgType']) && $postArr['MsgType'] == 'text'){   //文本消息
+            $postArr = json_decode($postStr, true);
+            if (!empty($postArr['MsgType']) && $postArr['MsgType'] == 'text') {   //文本消息
                 $fromUsername = $postArr['FromUserName'];   //发送者openid
                 $toUserName = $postArr['ToUserName'];       //小程序id
                 $textTpl = array(
-                    "ToUserName"=>$fromUsername,
-                    "FromUserName"=>$toUserName,
-                    "CreateTime"=>time(),
-                    "MsgType"=>"transfer_customer_service",
+                    "ToUserName" => $fromUsername,
+                    "FromUserName" => $toUserName,
+                    "CreateTime" => time(),
+                    "MsgType" => "transfer_customer_service",
                 );
                 exit(json_encode($textTpl));
-            }elseif(!empty($postArr['MsgType']) && $postArr['MsgType'] == 'image'){ //图文消息
+            } elseif (!empty($postArr['MsgType']) && $postArr['MsgType'] == 'image') { //图文消息
                 $fromUsername = $postArr['FromUserName'];   //发送者openid
                 $toUserName = $postArr['ToUserName'];       //小程序id
                 $textTpl = array(
-                    "ToUserName"=>$fromUsername,
-                    "FromUserName"=>$toUserName,
-                    "CreateTime"=>time(),
-                    "MsgType"=>"transfer_customer_service",
+                    "ToUserName" => $fromUsername,
+                    "FromUserName" => $toUserName,
+                    "CreateTime" => time(),
+                    "MsgType" => "transfer_customer_service",
                 );
                 exit(json_encode($textTpl));
-            }elseif($postArr['MsgType'] == 'event' && $postArr['Event']=='user_enter_tempsession'){ //进入客服动作
+            } elseif ($postArr['MsgType'] == 'event' && $postArr['Event'] == 'user_enter_tempsession') { //进入客服动作
                 $fromUsername = $postArr['FromUserName'];   //发送者openid
 //                $content = '您好，有什么能帮助你?';
 //                $data=array(
@@ -116,14 +120,15 @@ class Kefu
 //                    "text"=>array("content"=>$content)
 //                );
 
-                $data=array(
-                    "touser"=>$fromUsername,
-                    "msgtype"=>"link",
-                    "link"=>array(
-                        "title"=>'你来啦?',
-                        "description"=>'我有一些乱七八糟的东西想跟你说，还有一些福利.',
-                        "url"=>"http://mp.weixin.qq.com/s/lKAs-czQAdEvex6WAPsGRw",
-                        "thumb_url"=>"http://wx.qlogo.cn/mmhead/Q3auHgzwzM4xLNDUnYwb9PVDMDxwxKC4631OxxChgPsBPGh7yHUYYQ/0"
+                $data = array(
+                    "touser" => $fromUsername,
+                    "msgtype" => "link",
+                    "link" => array(
+                        "title" => '你来啦?',
+                        "description" => '我有一些乱七八糟的东西想跟你说，还有一些福利.',
+                        //   "url"=>"http://mp.weixin.qq.com/s/lKAs-czQAdEvex6WAPsGRw",
+                        "url" => "http://mp.weixin.qq.com/s?__biz=MzU5NTM1MjY0Mw==&mid=100000104&idx=1&sn=638a1c4bafbee3a8ae10533b8dbb66e8&chksm=7e720c44490585529ad10aee2dfbafceb5cdea6bf9671e9ae8a93a3cad465c80dd9c8c58641c#rd",
+                        "thumb_url" => "http://wx.qlogo.cn/mmhead/Q3auHgzwzM4xLNDUnYwb9PVDMDxwxKC4631OxxChgPsBPGh7yHUYYQ/0"
                     )
                 );
 
@@ -137,7 +142,7 @@ class Kefu
 //                            "thumb_url": "THUMB_URL"
 //               }
 //}
-                $json = json_encode($data,JSON_UNESCAPED_UNICODE);  //php5.4+
+                $json = json_encode($data, JSON_UNESCAPED_UNICODE);  //php5.4+
 
                 // 获取access_token
                 $Access = new AccessToken();
@@ -146,7 +151,7 @@ class Kefu
                 /*
                  * POST发送https请求客服接口api
                  */
-                $url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=".$access_token;
+                $url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" . $access_token;
                 //以'json'格式发送post的https请求
 
                 // -------------------- 原来的请求 ---------------------------
@@ -170,12 +175,12 @@ class Kefu
 //                }
 
                 // ------------------------------------------------
-                curl_post_raw($url,$json);
+                curl_post_raw($url, $json);
 
-            }else{
+            } else {
                 exit('aaa');
             }
-        }else{
+        } else {
             echo "";
             exit;
         }
